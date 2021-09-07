@@ -34,3 +34,18 @@ app.post('/api', function(req, res) {
         });
     });
 });
+
+app.get('/api', function(req, res){
+
+    db.open(function(err, mongoclient){
+        mongoclient.collection('postagens', function(err, collection){
+            collection.find().toArray(function(err, result){
+                if(err){
+                    res.json(err)
+                } else{
+                    res.json(result);
+                }
+            });
+        });
+    });
+});
