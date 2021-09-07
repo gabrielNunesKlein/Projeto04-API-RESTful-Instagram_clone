@@ -46,6 +46,7 @@ app.get('/api', function(req, res){
                 } else{
                     res.json(result);
                 }
+                mongoclient.close();
             });
         });
     });
@@ -60,7 +61,29 @@ app.get('/api/:id', function(req, res){
                 } else{
                     res.json(result);
                 }
+                mongoclient.close();
             });
+        });
+    });
+});
+
+app.put('/api/:id', function(req, res){
+    db.open(function(err, mongoclient){
+        mongoclient.collection('postagens', function(err, collection){
+            collection.update(
+                { _id : objectId(req.params.id)},
+                { $set : {titulo: req.body.titulo}},
+                {},
+
+                function(err, result){
+                    if(err){
+                        res.json(err)
+                    } else{
+                        res.json(result);
+                    }
+                    mongoclient.close();
+                }
+            );
         });
     });
 });
